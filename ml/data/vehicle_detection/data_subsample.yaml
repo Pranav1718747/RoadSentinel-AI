@@ -1,0 +1,7 @@
+path: /Users/pranav1718/Big One/RoadSentimentalAI/ml/data/vehicle_detection
+train: images/train_sub
+val: images/val
+test: images/test
+
+nc: 7
+names: ['bicycle', 'bus', 'car', 'motorbike', 'rickshaw', 'truck', 'van']

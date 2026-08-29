@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Secrets
+
+# ML models
+*.pt
+*.pth
+*.onnx
+*.safetensors
+
+# Videos
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# Datasets
+datasets/
+data/raw/
+
+# Generated output
+outputs/
+media/
+
+# Node
+node_modules/
+dist/
+build/
+
+# Logs
+*.log
+config.bat

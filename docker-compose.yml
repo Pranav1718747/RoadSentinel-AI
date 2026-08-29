@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: roadsentinel_postgres
+    environment:
+      POSTGRES_DB: roadsentinel_db
+      POSTGRES_USER: roadsentinel_user
+      POSTGRES_PASSWORD: roadsentinel_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U roadsentinel_user -d roadsentinel_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: roadsentinel_redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  django:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: roadsentinel_django
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=roadsentinel_backend.settings
+      - USE_POSTGRES=True
+      - DATABASE_HOST=postgres
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  celery:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: roadsentinel_celery
+    command: celery -A roadsentinel_backend worker --loglevel=info
+    volumes:
+      - .:/app
+    environment:
+      - DJANGO_SETTINGS_MODULE=roadsentinel_backend.settings
+      - USE_POSTGRES=True
+      - DATABASE_HOST=postgres
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - django
+      - redis
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: roadsentinel_frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - django
+
+volumes:
+  postgres_data:

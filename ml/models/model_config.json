@@ -1,0 +1,63 @@
+{
+  "model_type": "XGBoost",
+  "seed": 42,
+  "features_used": [
+    "distance",
+    "ttc",
+    "closing_speed",
+    "relative_speed",
+    "v1_speed",
+    "v2_speed",
+    "v1_acceleration",
+    "v2_acceleration",
+    "heading_difference",
+    "is_ttc_missing",
+    "trajectory_crossing",
+    "approaching",
+    "v1_class_car",
+    "v1_class_truck",
+    "v2_class_car"
+  ],
+  "target_mapping": {
+    "SAFE": 0,
+    "MEDIUM_RISK": 1,
+    "HIGH_RISK": 2
+  },
+  "train_samples": 245,
+  "val_samples": 47,
+  "test_samples": 68,
+  "validation_metrics": {
+    "model": "XGBoost",
+    "accuracy": 0.9362,
+    "macro_precision": 0.6667,
+    "macro_recall": 0.5758,
+    "macro_f1": 0.614,
+    "weighted_f1": 0.963,
+    "safe_precision": 1.0,
+    "safe_recall": 1.0,
+    "safe_f1": 1.0,
+    "med_precision": 1.0,
+    "med_recall": 0.7273,
+    "med_f1": 0.8421,
+    "high_risk_precision": 0.0,
+    "high_risk_recall": 0.0,
+    "high_risk_f1": 0.0
+  },
+  "test_metrics": {
+    "model": "XGBoost (Test)",
+    "accuracy": 0.9559,
+    "macro_precision": 0.6667,
+    "macro_recall": 0.5952,
+    "macro_f1": 0.6267,
+    "weighted_f1": 0.9753,
+    "safe_precision": 1.0,
+    "safe_recall": 1.0,
+    "safe_f1": 1.0,
+    "med_precision": 1.0,
+    "med_recall": 0.7857,
+    "med_f1": 0.88,
+    "high_risk_precision": 0.0,
+    "high_risk_recall": 0.0,
+    "high_risk_f1": 0.0
+  }
+}
